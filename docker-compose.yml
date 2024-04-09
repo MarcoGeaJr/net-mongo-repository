@@ -1,0 +1,29 @@
+version: '3.4'
+
+name: 'pizzaria'
+
+services:
+  pizza.api:
+    image: ${DOCKER_REGISTRY-}pizzaapi
+    build:
+      context: .
+      dockerfile: src/Pizza.API/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - rede-interna
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo
+    ports:
+      - 27017:27017 
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: adm@123
+    networks:
+      - rede-interna
+
+networks:
+  rede-interna:
